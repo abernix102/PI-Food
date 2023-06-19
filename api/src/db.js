@@ -37,6 +37,13 @@ const {Diet} = sequelize.models;
 // Product.hasMany(Reviews);
 Recipe.belongsToMany(Diet, { through: 'RecipeDiet' });
 Diet.belongsToMany(Recipe, { through: 'RecipeDiet' });
+sequelize.sync({ force: true })
+  .then(() => {
+    console.log('Base de datos sincronizada');
+  })
+  .catch((error) => {
+    console.error('Error al sincronizar la base de datos:', error);
+  });
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

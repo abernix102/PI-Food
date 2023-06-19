@@ -6,7 +6,7 @@ const { Recipe, Diet } = require('../db');
 //obtencion de recetas desde la api
 const allDataApi = async() => {
     try{
-        const apiUrl = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=60&addRecipeInformation=true`);
+        const apiUrl = await axios.get(`http://localhost:8080/recipes/complexSearch?addRecipeInformation=true&number=100&apiKey=${API_KEY}`);
         const apiInfo = apiUrl.data.results.map(element => {
             return {
                 id: element.id,
@@ -40,7 +40,7 @@ const getBdID = async(id) => {
 }
 
 const getApiID = async (id) =>{
-    const apiID = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${API_KEY}`)
+    const apiID = await axios.get(`http://localhost:8080/recipes/complexSearch?addRecipeInformation=true&number=100&apiKey=${API_KEY}`)
     const datas = apiID.data;
     const details = {
         id: datas.id,
@@ -76,14 +76,18 @@ const getDataBase = async () => {
   };
 
 
-const getAll = async () => {
-    const dataApiPromise = allDataApi();
-    const dataPromise  = getDataBase();
-    //como las funciones devuelven promesas y son asincronas hay que esperas las respuesta
-   const [dataApi, data] = await Promise.all([dataApiPromise, dataPromise]);
-   const all = dataApi.concat(data);
-  return all;
-}
+  const getAll = async () => {
+    try {
+      const dataApiPromise = allDataApi();
+      const dataPromise = getDataBase();
+      const [dataApi, data] = await Promise.all([dataApiPromise, dataPromise]);
+      const all = dataApi.concat(data);
+      return all;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
 
 module.exports = {
     allDataApi,

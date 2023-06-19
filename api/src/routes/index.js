@@ -7,10 +7,6 @@ const router = Router();
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
-router.get('/',async (req, res )=>{
-     await getDiets(req, res)
-})
-
 
 router.get('/diet', async (req, res) => {
     await getDB(req, res);
@@ -19,7 +15,7 @@ router.get('/diet', async (req, res) => {
 router.get('/recipe', async (req, res) =>{
     await getRecipesAll(req, res)
 })
-router.get('/ricipes', async (req, res) =>{
+router.get('/recipes', async (req, res) =>{
     await getRecipe(req, res)
 })
 

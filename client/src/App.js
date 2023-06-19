@@ -1,31 +1,21 @@
 import './App.css';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { Routes, Route} from 'react-router-dom';
+import HomePage from './views/Homepage';
+import Navbar from './views/Navbar.jsx';
+import Recipes from './views/Recipes';
+import Create from './views/Create';
+import Detail from './views/Detail';
 
 function App() {
-  const [recipes, setRecipes] = useState([]);
-
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        const { data } = await axios.get('http://localhost:3001/recipe');
-        setRecipes( data);
-      } catch (error) {
-        alert('No se pudo obtener la lista de recetas');
-      }
-    };
-
-    fetchRecipes();
-  }, []);
-
   return (
-    <div className="App">
-      <h1>Henry Food</h1>
-      <div>
-        {recipes.map(({ name }) => (
-          <div key={name}>{name}</div>
-        ))}
-      </div>
+    <div>
+      <Navbar />
+      <Routes>
+        <Route exact path='/' element={<HomePage />} />
+        <Route path='/recipes' element={<Recipes />} />
+        <Route path='/create-recipes' element={<Create/>} />
+        <Route path='/detail/:id' element={<Detail/>}/>
+      </Routes>
     </div>
   );
 }
